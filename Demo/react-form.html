@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>react-form</title>
+</head>
+<body>
+
+<div id="test"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">/*告诉babel.js解析里面的jsx的代码*/
+
+/**
+ *    测试react的收集表单数据
+ *
+ *    受控组件：自动将数据转化为状态数据的，比如这里的psw
+ *    非受控：就是需要手动去读取，如这里 username
+ *    推荐使用受控的，这是React的思想，少操作Dom
+ *
+ */
+
+// 1. 创建虚拟DOM元素对象
+class LoginForm extends React.Component{
+
+    constructor(props){
+        super(props)
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
+        this.state={
+            psw:''
+        }
+
+    };
+
+    handleSubmit(event){
+
+        const name = this.nameInput.value
+        const pwd = this.state.psw
+        alert(`用户名为${name}, 密码为${pwd}`)
+
+        event.preventDefault();//阻止事件的默认行为，这里就是默认提交动作
+
+    };
+
+    handleChange(event){
+        const pswVal = event.target.value
+        console.log(pswVal)
+        this.setState({psw:pswVal}) //状态是一个对象，故而，写法就是对象的写法方式
+
+
+    };
+
+
+    render(){
+        return(
+            <form action="/login" onSubmit={this.handleSubmit}>
+                用户名：<input type="text" ref={x=>this.nameInput=x}/>
+                密码：<input type="password" value={this.state.psw} onChange={this.handleChange}  />
+                <input type="submit" value="登录"/>
+
+            </form>
+
+        )
+    };
+}
+// 2. 渲染组件标签
+ReactDOM.render(<LoginForm />,document.getElementById('test'));
+
+</script>
+</body>
+</html>

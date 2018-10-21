@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>02_ToDolist</title>
+</head>
+<body>
+
+<div id="test"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">/*告诉babel.js解析里面的jsx的代码*/
+
+/**
+ *    测试react的三大属性之 state ，用于保存内部数据
+ *
+ */
+
+
+// 1. 创建虚拟DOM元素对象
+class MyComponent extends React.Component{
+
+    constructor(props){
+        //固定写法，props是外部数据
+        super(props)
+
+        /*
+           状态值，保存的是内部数据，初始化数据
+        */
+
+        this.state={
+            isLikeMe: false
+        }
+
+        /**
+         * 将组件本身this绑定到自定义方法中去
+         * ps: bind方法，将产生一个新的方法，只是函数体一样
+         */
+        this.hander1 = this.hander1.bind(this);
+
+    }
+
+    //不是Component组件本身的方法，是无法获取到this对象（即组件对象）
+    //需要在构造方法中，对组件本身的this，绑定到自定义方法中
+    hander1(){
+
+        /*
+        *   React 直接对状态修改，是不支持的，需要使用setState方法来处理
+        */
+
+        // this.state.isLikeMe = !this.state.isLikeMe
+
+        //得到状态
+        const isLike = this.state.isLikeMe;
+
+        //修改状态
+        this.setState({
+            isLikeMe:!isLike
+        })
+
+
+
+    }
+
+    render(){
+        const  isLikeMe = this.state.isLikeMe
+        return <h2 onClick={this.hander1}>{isLikeMe?'我喜欢你':'你喜欢我'}</h2>
+    }
+}
+   // var vDom = <h1>Hello React!</h1>   // 不是字符串
+   // // 2. 将虚拟DOM渲染到页面真实DOM容器中
+   // ReactDOM.render(vDom, document.getElementById('test'))
+ReactDOM.render(<MyComponent />,document.getElementById('test'))
+
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>02_ToDolist</title>
+</head>
+<body>
+
+<div id="test"></div>
+<div id="test2"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">/*告诉babel.js解析里面的jsx的代码*/
+/**
+ *    测试react的三大属性之 props ，用于从外部读取数据
+ *
+ */
+// 1. 创建虚拟DOM元素对象
+
+/**
+ *   方式一：采用function的方式，这种方式，一般是简单处理，如，只显示数据，没有什么交互动作。
+ */
+// function MyComponent(props){
+//     return (
+//         <ul>
+//             <li>{props.name}</li>
+//             <li>{props.age}</li>
+//             <li>{props.sex}</li>
+//         </ul>
+//
+//     )
+// }
+
+/**
+ * 方式二：采用类的方式
+ *
+ * 注意，这里的props是组件的一个属性，使用时，要用this.props ,有别于function中，可以直接使用
+ *
+ */
+
+class MyComponent extends React.Component {
+
+    constructor(props){
+        super(props);
+
+    }
+
+    render() {
+        console.log(this) //打印输出内部的结构
+        return (
+            <ul>
+                <li>{this.props.name}</li>
+                <li>{this.props.age}</li>
+                <li>{this.props.sex}</li>
+            </ul>
+        )
+
+    }
+}
+
+//指定属性值的类型和是否必须输入
+MyComponent.propTypes = {
+    name:PropTypes.string.isRequired,
+    age:PropTypes.number
+
+}
+
+
+
+const p1 = {
+    name:"Tom",
+    age:15,
+    sex:"男"
+}
+
+const p2 = {
+    name:"Lusi",
+    age:19,
+    sex:"女"
+}
+
+
+
+/**
+ ... 的作用
+ 1.打包
+ function fn(...param){}  fn(1,2,3) 将1,2,3 打包为数组
+ 2.解包
+ const arr1 = [3,4,5] const arr2 = [1,2,...arr1,6,7] 最终解包为[1,2,3,4,5,6,7]
+
+ */
+ReactDOM.render(<MyComponent {...p1} />, document.getElementById('test'))
+
+ReactDOM.render(<MyComponent {...p2} />, document.getElementById('test2'))
+
+</script>
+</body>
+</html>

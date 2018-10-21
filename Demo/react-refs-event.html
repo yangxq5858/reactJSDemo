@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>02_ToDolist</title>
+</head>
+<body>
+
+<div id="test"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">/*告诉babel.js解析里面的jsx的代码*/
+/**
+ *    测试react的三大属性之 refs ，用于事件绑定
+ *
+ */
+// 1. 创建虚拟DOM元素对象
+class MyComponent extends React.Component{
+    constructor(props){
+        super(props)
+        this.btn1 = this.btn1.bind(this)
+        this.btn2 = this.btn2.bind(this)
+    }
+
+    btn1(){
+
+        /**
+         * 方式一：
+         * <input type="text" ref="codeinput"/>&nbsp;
+         * refs是Component中内置的一个对象，对象的属性名就是我们在ref中定义的名字codeinput
+
+
+           const codeinput = this.refs.codeinput
+           alert(codeinput.value)
+         */
+        const codeinput = this.refs.codeinput
+        alert(codeinput.value)
+
+        /** 方式二：也是React高版本推荐的方式
+         *<input type="text" ref={a=>this.codeinput1 = a} />
+         *
+         * ref={a=>this.codeinput1 = a} 这里是一个委托，回调， a就代表input标签本身，后面的方法体，是动态给this，加了一个对象codeinput1
+         * 并把当前的标签input赋值给了它
+         *
+         */
+        //
+        alert(this.codeinput1.value)
+
+    }
+
+
+    /**
+     * @event
+     *
+     * 这里获取的是事件触发元素本身，我们可以不用ref来实现了，直接用event这个默认参数来处理
+     *
+     * 通过 event.target来得到目标元素
+     */
+    btn2(event){
+        alert(event.target.value)
+
+    }
+
+    render(){
+        return(
+            <div>
+                <input type="text" ref="codeinput"/>&nbsp;
+                <input type="text" ref={a=>this.codeinput1 = a} />&nbsp;
+                <button onClick={this.btn1}>提示输入</button>&nbsp;
+                <input type="text" placeholder="失去焦点提示" onBlur={this.btn2} ></input>
+
+            </div>
+        )
+    }
+}
+   // var vDom = <h1>Hello React!</h1>   // 不是字符串
+   // // 2. 将虚拟DOM渲染到页面真实DOM容器中
+   // ReactDOM.render(vDom, document.getElementById('test'))
+ReactDOM.render(<MyComponent />,document.getElementById('test'))
+
+</script>
+</body>
+</html>

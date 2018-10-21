@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>react-lifecycle</title>
+</head>
+<body>
+<div id="test"></div>
+
+<script type="text/javascript" src="../js/react.development.js"></script>
+<script type="text/javascript" src="../js/react-dom.development.js"></script>
+<script type="text/javascript" src="../js/prop-types.js"></script>
+<script type="text/javascript" src="../js/babel.min.js"></script>
+<script type="text/babel">
+
+
+    class LifeComponent extends React.Component {
+        constructor(props) {
+            super(props);
+            //设置状态中透明度的初始值
+            this.state = {
+                opacity: 1  //透明度
+            };
+            this.distroyComponent = this.distroyComponent.bind(this);
+        }
+
+
+
+        distroyComponent() {
+            console.log("do distroyComponent()");
+            //使用ReactDom的移除组件方法，移除一个组件，移除组件时，就会触发一个生命周期中所有的方法。
+            ReactDOM.unmountComponentAtNode(document.getElementById("test"));
+        }
+
+
+        //这里的回调方法中用了bind（this），否则找不到组件本身的this
+        //内置方法：组件挂载完成时，即在render之后执行。
+        componentDidMount() {
+            console.log("do componentDidMount()");
+            //这里将定时器的id返回给一个新的组件变量intervalId
+            this.intervalId = setInterval(function () {
+                console.log("定时器执行中...");
+                let {opacity} = this.state;
+                opacity -= 0.1;
+                if (opacity <= 0) {
+                    opacity = 1;
+                }
+                this.setState({opacity});
+
+            }.bind(this), 200);
+        }
+
+        //内置方法：组件即将移除之前的方法
+        componentWillUnmount(){
+            console.log("do componentWillUnmount()");
+            //清理定时器
+            clearInterval(this.intervalId);
+        }
+
+        render() {
+            console.log("do render()")
+            const {opacity} = this.state;
+
+            //注意，这里的{{}},第一个{}表示这是写js代码的地方，第二个{}表示对象的写法
+            //{{opacity:opacity}} 这里的属性名和属性值的名称一样，可以省略掉冒号后面的即 {{opacity}}
+            return (
+                <div>
+                    <h2 style={{opacity}}>React 太难了</h2>
+                    <button onClick={this.distroyComponent}>移除组件</button>
+                </div>
+            );
+        }
+
+    }
+
+
+    ReactDOM.render(<LifeComponent/>, document.getElementById('test'));
+</script>
+</body>
+</html>
